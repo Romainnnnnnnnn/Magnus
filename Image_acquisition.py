@@ -5,19 +5,33 @@ import cv2
 from matplotlib import pyplot as plt
 import numpy as np
 
-def acquire_grid_images():
-    # Connects to webcam
-    cap = cv2.VideoCapture(0)
+cap = None  # Initialize the camera variable globally
+
+def initialize_camera():
+    global cap 
+
+    cap = cv2.VideoCapture(0) # Connects to webcam
 
     # Set width and height of the video feed
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1024)
 
-    # Capture frame-by-frame
-    ret, frame = cap.read()
+    # let time to adjust the camera
+    for i in range(50):
+        ret, frame = cap.read()
 
-    # Crop the frame to the center 1024x1024 region
-    frame_resized = frame[0:1024, 128:1152]
+def stop_camera():
+    global cap
+
+    # When everything done, release the capture and destroy the windows
+    cap.release()
+    cv2.destroyAllWindows()
+
+def acquire_grid_images():
+    global cap
+
+    ret, frame = cap.read() # Capture a frame
+    frame_resized = frame[0:1024, 128:1152] # Crop the frame to the center 1024x1024 region
 
     # Draw an 8x8 grid
     for i in range(1, 8):
@@ -31,8 +45,9 @@ def acquire_grid_images():
             square = frame_resized[row * 128:(row + 1) * 128, col * 128:(col + 1) * 128]
             squares.append(square)
 
-    np_squares = np.asarray(squares)
-    print("Size of the numpy array:", np_squares.shape)
+    # Convert the list of squares to a numpy array
+    np_squares = np.stack(squares, axis=0)
+    #print("Size of the numpy array:", np_squares.shape)
 
     # Display the squares
     fig, axes = plt.subplots(8, 8, figsize=(10, 10))
@@ -42,11 +57,17 @@ def acquire_grid_images():
     plt.tight_layout()
     plt.show()
 
-    # When everything done, release the capture
-    cap.release()
-
     return np_squares
 
-
 if __name__ == "__main__":
+    initialize_camera()
     acquire_grid_images()
+    stop_camera()
+    """"
+    try:
+        while True:
+            pass  # Keep the program running
+    except KeyboardInterrupt:
+        stop_camera()
+    """
+    

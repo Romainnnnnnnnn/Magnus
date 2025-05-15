@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Dataset
-# -> pip install torchsummary
 from torchsummary import summary
 print(torch.cuda.is_available())
 

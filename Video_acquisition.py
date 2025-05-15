@@ -3,36 +3,45 @@
 
 import cv2
 
-# Connects to webcam
-cap = cv2.VideoCapture(0)
+cap = None  # Initialize the camera variable globally
 
-# Automatically grab width and height from video feed
-width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1024)
-width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+def initialize_camera():
+    global cap
 
+    cap = cv2.VideoCapture(0) # Connects to webcam
 
-while True:
-    # Capture frame-by-frame
-    ret, frame = cap.read()
+    # Set width and height of the video feed
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1024)
 
-    # Crop the frame to the center 1024x1024 region
-    frame_resized = frame[0:1024, 128:1152]
+def stop_camera():
+    global cap
 
-    # Draw an 8x8 grid
-    for i in range(1, 8):
-        cv2.line(frame_resized, (0, i * 128), (1024, i * 128), (255, 255, 255), 1) # horizontal lines
-        cv2.line(frame_resized, (i * 128, 0), (i * 128, 1024), (255, 255, 255), 1) # vertical lines
-    
-     # Display the resulting frame with the grid
-    cv2.imshow('frame', frame_resized)
-    
-    # This command let's us quit with the "q" button on a keyboard.
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+    # When everything done, release the capture and destroy the windows
+    cap.release()
+    cv2.destroyAllWindows()
 
-# When everything done, release the capture and destroy the windows
-cap.release()
-cv2.destroyAllWindows()
+def display_video_with_grid():
+    global cap
+
+    while True:
+        ret, frame = cap.read() # Capture frame-by-frame
+        frame_resized = frame[0:1024, 128:1152] # Crop the frame to the center 1024x1024 region
+
+        # Draw an 8x8 grid
+        for i in range(1, 8):
+            cv2.line(frame_resized, (0, i * 128), (1024, i * 128), (255, 255, 255), 1)  # horizontal lines
+            cv2.line(frame_resized, (i * 128, 0), (i * 128, 1024), (255, 255, 255), 1)  # vertical lines
+
+        cv2.imshow('frame', frame_resized) # Display the resulting frame with the grid
+
+        # This command lets us quit with the "q" button on a keyboard
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+if __name__ == "__main__":
+    initialize_camera()
+    try:
+        display_video_with_grid()
+    finally:
+        stop_camera()
