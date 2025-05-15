@@ -49,6 +49,7 @@ def acquire_grid_images():
     np_squares = np.stack(squares, axis=0)
     #print("Size of the numpy array:", np_squares.shape)
 
+    """
     # Display the squares
     fig, axes = plt.subplots(8, 8, figsize=(10, 10))
     for idx, ax in enumerate(axes.flat):
@@ -56,6 +57,7 @@ def acquire_grid_images():
         ax.axis('off')  # Turn off axis
     plt.tight_layout()
     plt.show()
+    """
 
     return np_squares
 
@@ -63,11 +65,4 @@ if __name__ == "__main__":
     initialize_camera()
     acquire_grid_images()
     stop_camera()
-    """"
-    try:
-        while True:
-            pass  # Keep the program running
-    except KeyboardInterrupt:
-        stop_camera()
-    """
     

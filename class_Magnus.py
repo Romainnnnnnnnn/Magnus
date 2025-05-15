@@ -4,7 +4,6 @@ import torch.nn.functional as F
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Dataset
 from torchsummary import summary
-print(torch.cuda.is_available())
 
 # Define the model
 class Magnus(nn.Module):
