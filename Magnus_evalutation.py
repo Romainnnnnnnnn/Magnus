@@ -1,4 +1,5 @@
 import Image_acquisition
+from class_Magnus import Magnus
 
 import torch
 import torch.nn as nn
@@ -9,10 +10,12 @@ from torch.utils.data import DataLoader, Dataset
 from torchsummary import summary
 print(torch.cuda.is_available())
 
-"""
+
 model_path = ".\\model\\magnus_model.pth"
 Data = Image_acquisition.acquire_grid_images()
 
+# Instantiate the model, use the GPU if possible
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = Magnus().to(device)
 model.load_state_dict(torch.load(model_path))
 model.eval()  # Set the model to evaluation mode
@@ -31,4 +34,4 @@ with torch.no_grad():
     y_sigmoid = model(Data_tensor)
     y_pred = torch.argmax(y_sigmoid, axis=-1).cpu().numpy()
 
-print(y_pred)"""
+print(y_pred)
