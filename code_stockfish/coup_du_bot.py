@@ -15,6 +15,12 @@ def coup_du_bot(board, chemin, niveau, couleur):
     
     return(meilleur_coup)
 
+def coup_du_bot_2(position, chemin, niveau, couleur):
+    
+    meilleur_coup = stockfish_coup(chemin, niveau, position, couleur)
+    
+    return(meilleur_coup)
+
 
 
 
