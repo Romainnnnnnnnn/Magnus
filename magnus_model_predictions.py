@@ -19,7 +19,6 @@ def init_model(model_path):
     return model, device
 
 def model_predict(model, device, data):
-
     # Preprocess the Data
     Data_tensor = torch.tensor(data, dtype=torch.float32).permute(0, 3, 1, 2).to(device) / 255.0  # Normalize to [0, 1]
 
@@ -40,9 +39,9 @@ def traduce_pred(y_pred):
 
 
 if __name__ == "__main__":
-    model, device = init_model("C:\\Users\\SD\\Desktop\\M1 - Q2\\Systèmes intelligents\\Magnus\\model\\Magnus_model.pth") # Path to the model weights
+    model, device = init_model("C:\\Users\\SD\\Desktop\\M1 - Q2\\Systèmes intelligents\\Magnus\\model\\Magnus_model.pth")
 
-    image_acquisition.initialize_camera() # Initialize the camera
+    image_acquisition.initialize_camera()
     Data = image_acquisition.acquire_grid_images()
 
     y_pred = model_predict(model, device, Data)

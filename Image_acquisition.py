@@ -20,13 +20,6 @@ def initialize_camera():
     for i in range(50):
         ret, frame = cap.read()
 
-def stop_camera():
-    global cap
-
-    # When everything done, release the capture and destroy the windows
-    cap.release()
-    cv2.destroyAllWindows()
-
 def acquire_grid_images():
     global cap
 
@@ -60,6 +53,13 @@ def acquire_grid_images():
     """
 
     return np_squares
+
+def stop_camera():
+    global cap
+
+    # When everything done, release the capture and destroy the windows
+    cap.release()
+    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     initialize_camera()

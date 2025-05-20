@@ -14,13 +14,6 @@ def initialize_camera():
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1024)
 
-def stop_camera():
-    global cap
-
-    # When everything done, release the capture and destroy the windows
-    cap.release()
-    cv2.destroyAllWindows()
-
 def display_video_with_grid():
     global cap
 
@@ -38,6 +31,13 @@ def display_video_with_grid():
         # This command lets us quit with the "q" button on a keyboard
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+
+def stop_camera():
+    global cap
+
+    # When everything done, release the capture and destroy the windows
+    cap.release()
+    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     initialize_camera()
