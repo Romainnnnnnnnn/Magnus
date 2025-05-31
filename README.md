@@ -35,6 +35,110 @@ L'ordre est donc le suivant :
     -IA pour caclculer le prochain coup suivant l'état du jeu
     -Bras robotisé qui realise le déplacement des pièces
 
-# Plateau d'échecs
+## Plateau d'échecs
 
 Le plateau serait un plateau sur mesure de 8x8 cases comme tout plateau de jeu d'échecs mais avec des cases de 5cmx5cm pour permettre une prise efficace par la pince du robot. Le plateau ferait 40cmx40cm au total. Les pièces seront des jetons de puissance 4 avec des images collées sur ces derniers, ce sont ces images qui seront reconnues.
+
+
+## Les différents éléments
+
+### Chess_Data
+
+Dataset utilisé pour l'entrainement, sans augmentation "artificielle". 13 classes, 64 images par classe. Ce document est associé au csv Chess_Data.
+
+### Test_Data
+
+Dataset utilisé pour l'évaluation, sans augmentation "artificielle". 13 classes, 64 images par classe. Ce document est associé au csv Test_Data.
+
+#### magnus_model
+
+Modèle entrainé avec Chess_Data, et évalué avec Test_Data.
+
+
+
+### Codes - image
+
+Ces codes permettent le traitement de l'image de la Webcam. 
+
+#### image_camera_calibration
+
+Code utilisé lors de l'installation du système physique. Cela permet d'avoir un visuel de la caméra, divisé en 64 cases, afin d'ajuster le positionnement de la caméra et de l'echiquier.
+
+#### image_acquisition
+
+Code utilisé pour capturer l'image de la Webcam et en ajuster la résolution, la diviser en 64 cases d'une grille de 8x8, et enregistrer les images de chaque case. L'enregistrement est utilisé pour 2 choses. D'une part, il a permis initialement la création des datasets. D'autre part, il permet l'apport d'images pour l'IA.
+
+
+### Codes - model
+
+Ces codes permettent la création et l'entrainement du modèle.
+
+#### model_class_Magnus
+
+Code dans lequel on définit la structure du modèle.
+
+#### model_building
+
+Code dans lequel la data est augmentée, le modèle est entrainé, testé et enregistré
+
+#### model_predictions
+
+Code qui via les images renvoyées par le code image_acquisition, et le modèle entrainé via model_building, renvoie une matrice de la position actuelle
+
+
+### Codes - user
+
+Questions pour l'utilisateur
+
+#### user_question_couleur
+
+Demande à l'utilisateur s'il joue les noirs ou les blancs
+
+#### user_question_elo
+
+Demande à l'utilisateur l'elo de Stockfish
+
+#### user_questions
+
+Code mère qui fait appel aux 2 autres codes
+
+
+### Stockfish
+
+Prérequis :
+	- Avoir Stockfish d'installé sur son pc
+	- Connaitre le chemin du stockfish-windows-x86-64-avx2.exe
+	- Faire pip install stockfish dans l'environnement virtuel
+    - Faire pip install chess dans l'environnement virtuel
+
+Paramètres d'entrée :
+
+	- board : tableau de Strings de 1x64 avec la position de la partie
+		- Le remplir par rangée puis par colonne : A1, B1, C1, D1, E1, F1, G1, H1, A2 ...
+		- Informations sur chaque case :
+    		- 'xy' 
+        	- 'x' = couleur de la pièce : 'w' pour blanc, 'b' pour noir
+        	- 'y' = type de la pièce : 'p' pour pion, 'r' pour tour, 'n' pour cavalier, 'b' pour fou, 'q' pour dame, 'k' pour roi
+
+	- chemin : chemin vers l'exécutable de Stockfish
+
+	- niveau : niveau de jeu du bot (entre 1350 et 2850)
+
+	- couleur : couleur que joue le bot
+
+Paramètre de sortie :
+
+	- meilleur_coup : coup que renvoie le programme
+
+Fonctions :
+
+	- stockfish_tableau_resizer : fonction qui convertit le tableau 1x64 en 8x8
+
+	- stockfish_tableau_to_fen : fonction qui convertit le tableau 8x8 em position FEN
+	
+	- stockfish_best_play : fonction qui sur base du FEN, renvoie le meilleur coup
+
+	- stockfish_stockfish  : code mère qui renvoie le meilleur coup et affiche un visuel de la position
+
+
+

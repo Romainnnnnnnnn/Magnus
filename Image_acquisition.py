@@ -10,7 +10,7 @@ cap = None  # Initialize the camera variable globally
 def initialize_camera():
     global cap 
 
-    cap = cv2.VideoCapture(0) # Connects to webcam
+    cap = cv2.VideoCapture(2) # Connects to webcam
 
     # Set width and height of the video feed
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
@@ -51,7 +51,11 @@ def acquire_grid_images():
     plt.tight_layout()
     plt.show()
     """
-
+    # Save each square as an image, used for the creation of the dataset
+    #for idx, square in enumerate(squares, start = 64):
+    #    filename = f"square_{idx:02d}.png"
+    #    cv2.imwrite(filename, square)
+        
     return np_squares
 
 def stop_camera():
