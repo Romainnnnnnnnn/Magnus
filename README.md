@@ -1,14 +1,12 @@
 # Description du projet 
 
-L'objectif est de pouvoir jouer aux échecs, en physique, contre une intelligence artificielle. Les coups de l'IA seraient réalisés par un UR3. 
+L'objectif est de pouvoir jouer aux échecs, en physique, contre une intelligence artificielle. 
 
 Le projet est décomposé en 3 parties :
 
-    -D'une part, il y a la reconnaissance d'image. Par l'intermédiaire d'une caméra (fixée sur le bras du robot, ou sur un support fixe), l'IA sera en mesure de reconnaître les différentes pieces sur les cases du plateau. Pour une question de simplicité, nous nous limiterons à un seul plateau, et à des pièces sur mesures.
+    -D'une part, il y a la reconnaissance d'image. Par l'intermédiaire d'une caméra sur un support fixe, l'IA sera en mesure de reconnaître les différentes pieces sur les cases du plateau. Pour une question de simplicité, nous nous limiterons à un seul plateau, et à des pièces sur mesures.
 
     -D'autre part, il y a l'IA / l'algorithme qui sera en mesure de décider des coups. Etant donné que cela sort du projet, nous utiliserons une IA entrainée "toute faite" (à part si le temps nous le permet). 
-
-    -Et enfin, il y a la partie robot qui recevra les mouvements à faire pour deplacer les bonnes pieces ou il faut.
 
 ## Reconnaissance d'image
 
@@ -16,24 +14,7 @@ L'IA de reconnaissance d'image servirait à reconnaitre les pieces et leur place
 
 ## IA joueuse d'échecs
 
-Cette IA serait probablement un modèle tout fait qu'il faut implémenter/attacher à notre projet. Il recevrait alors l'état du jeu et il retournerait le prochain coup a faire.
-
-## Bras robotisé
-
-Ce bras robotisé sera à piori l'UR3. Celui ci recevrait le prochain coup à faire et degagerait la case arrivée s'il y a une pièce, puis deplacerait la piece de la case départ vers la case arrivée.
-Les différentes actions possibles du robot, sachant qu'il doit connaitre les positions des cases, seraient :
-    -prendre pièce
-    -poser pièce
-    -dégager pièce prise
-
-## Ordre de réalisation
-
-Afin de rester focus sur l'objetif premier qui est la reconnaissance d'image, la premiere étape du projet sera la reconnassance du jeu. Ensuite vient l'ajout de l'IA pour calculer les bons coups. Nous pourrons ainsi faire le déplacement des pièces manuellement à la place du robot en premier temps. Il est plus logique de faire le projet dans ce sens car il est moins intéressant d'implémenter le robot sans savoir les coups qu'il faut faire.
-
-L'ordre est donc le suivant : 
-    -Reconnaissance du jeu
-    -IA pour caclculer le prochain coup suivant l'état du jeu
-    -Bras robotisé qui realise le déplacement des pièces
+Cette IA serait probablement un modèle tout fait qu'il faut implémenter/attacher à notre projet. Il recevrait alors l'état du jeu et il retournerait le prochain coup a faire. L'IA utilisée est Stockfish qui permet de calculer le prochain coup avec la possibilité de parametrer son niveau d'ELO.
 
 ## Plateau d'échecs
 
@@ -44,16 +25,15 @@ Le plateau serait un plateau sur mesure de 8x8 cases comme tout plateau de jeu d
 
 ### Chess_Data
 
-Dataset utilisé pour l'entrainement, sans augmentation "artificielle". 13 classes, 64 images par classe. Ce document est associé au csv Chess_Data.
+Dataset utilisé pour l'entrainement, sans augmentation "artificielle". 13 classes, 64 images par classe. Ces data sont associées au csv Chess_Data.
 
 ### Test_Data
 
-Dataset utilisé pour l'évaluation, sans augmentation "artificielle". 13 classes, 64 images par classe. Ce document est associé au csv Test_Data.
+Dataset utilisé pour l'évaluation, sans augmentation "artificielle". 13 classes, 64 images par classe. Ces data sont associées au csv Test_Data.
 
 #### magnus_model
 
 Modèle entrainé avec Chess_Data, et évalué avec Test_Data.
-
 
 
 ### Codes - image
@@ -62,24 +42,24 @@ Ces codes permettent le traitement de l'image de la Webcam.
 
 #### image_camera_calibration
 
-Code utilisé lors de l'installation du système physique. Cela permet d'avoir un visuel de la caméra, divisé en 64 cases, afin d'ajuster le positionnement de la caméra et de l'echiquier.
+Code utilisé lors de l'installation du système physique. Cela permet d'avoir un visuel de la caméra, divisé en 64 cases, afin de calibrer le positionnement de la caméra et de l'echiquier.
 
 #### image_acquisition
 
-Code utilisé pour capturer l'image de la Webcam et en ajuster la résolution, la diviser en 64 cases d'une grille de 8x8, et enregistrer les images de chaque case. L'enregistrement est utilisé pour 2 choses. D'une part, il a permis initialement la création des datasets. D'autre part, il permet l'apport d'images pour l'IA.
+Code utilisé pour capturer l'image de la Webcam et en ajuster la résolution, la diviser en 64 cases d'une grille de 8x8, et enregistrer les images de chaque case. L'enregistrement est utilisé pour 2 choses : d'une part, il a permis initialement la création des datasets, d'autre part, il permet l'apport d'images pour l'IA.
 
 
 ### Codes - model
 
 Ces codes permettent la création et l'entrainement du modèle.
 
-#### model_class_Magnus
-
-Code dans lequel on définit la structure du modèle.
-
 #### model_building
 
 Code dans lequel la data est augmentée, le modèle est entrainé, testé et enregistré
+
+#### model_class_Magnus
+
+Code dans lequel on définit la structure du modèle (copie de la classe Mangus).
 
 #### model_predictions
 
@@ -139,6 +119,3 @@ Fonctions :
 	- stockfish_best_play : fonction qui sur base du FEN, renvoie le meilleur coup
 
 	- stockfish_stockfish  : code mère qui renvoie le meilleur coup et affiche un visuel de la position
-
-
-

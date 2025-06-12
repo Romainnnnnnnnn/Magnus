@@ -1,7 +1,5 @@
 from stockfish_tableau_resizer import tableau_resizer
-
 from stockfish_tableau_to_fen import tableau_to_fen
-
 from stockfish_best_play import stockfish_coup
 
 
