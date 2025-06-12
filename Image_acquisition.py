@@ -36,6 +36,7 @@ def acquire_grid_images():
     for row in range(8):
         for col in range(8):
             square = frame_resized[row * 128:(row + 1) * 128, col * 128:(col + 1) * 128]
+            square = cv2.rotate(square, cv2.ROTATE_180)
             squares.append(square)
 
     # Convert the list of squares to a numpy array
